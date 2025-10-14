@@ -4,11 +4,11 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 const menuItems = [
-  { label: "All Events", path: "/dashboard/events", icon: "/icons/events.png" },
-  { label: "Registered Events", path: "/dashboard/registeredevents", icon: "/icons/purchased-events.png" },
-  { label: "Speakers", path: "/dashboard/speakers", icon: "/icons/speaker.png" },
+  { label: "Events", path: "/dashboard/events", icon: "/icons/events.png" },
+  { label: "Orders", path: "/dashboard/registeredevents", icon: "/icons/order.png" },
+  // { label: "Speakers", path: "/dashboard/speakers", icon: "/icons/speaker.png" },
   { label: "My Profile", path: "/dashboard/myprofile", icon: "/icons/my-profile.png" },
-  { label: "My Purchases", path: "/dashboard/mypurchase", icon: "/icons/my-purchases.png" },
+  { label: "Users", path: "/dashboard/mypurchase", icon: "/icons/my-profile.png" },
 ];
 
 export default function Sidebar() {

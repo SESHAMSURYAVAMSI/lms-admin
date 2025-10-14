@@ -1,95 +1,227 @@
 "use client";
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-interface RegisterModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  eventTitle: string;
-  onRegister: () => void; // add this for registration flow
-}
+export default function AddEventPage() {
+  const router = useRouter();
 
-export default function RegisterModal({
-  isOpen,
-  onClose,
-  eventTitle,
-  onRegister,
-}: RegisterModalProps) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    shortName: "",
+    startDate: "",
+    endDate: "",
+    venue: "",
+    city: "",
+    state: "",
+    country: "India",
+    registrationType: "Paid",
+    amount: "",
+    status: "Active",
+  });
 
-  if (!isOpen) return null;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // if (!name || !email || !captchaValue) {
-    //   alert("Please fill all fields and complete reCAPTCHA");
-    //   return;
-    if (!name || !email) { // only check for name and email during local dev
-    alert("Please fill all fields.");
-    return;
-    }
-    onRegister(); // trigger registration
-    alert(`Registered successfully for ${eventTitle}`);
-    onClose();
+    console.log("Form Submitted:", formData);
+    router.push("/dashboard/events"); // Redirect back to events page
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-md w-[90%] sm:w-[400px] shadow-lg relative">
+    <div className="min-h-screen bg-white flex flex-col items-center py-10 px-4">
+      <div className="w-full sm:w-[600px] bg-white border border-gray-200 rounded-lg shadow-md p-6 relative">
         <button
-          onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+          onClick={() => router.push("/dashboard/events")}
         >
           <X className="w-5 h-5" />
         </button>
 
-        <h2 className="text-lg font-bold text-[#0d47a1] mb-1">
-          Register for FREE
-        </h2>
-        <p className="text-sm text-[#0d47a1] font-semibold mb-4">{eventTitle}</p>
+        <h2 className="text-xl font-semibold mb-6">Add Event</h2>
 
-        <form className="space-y-3" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-sm font-medium">
-              Full Name (as on certificate)*
+            <label className="block font-medium mb-1">
+              Event Full Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              placeholder="Full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border border-gray-300 rounded-md w-full px-3 py-2 focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
             />
           </div>
 
           <div>
-            <label className="text-sm font-medium">Email ID*</label>
+            <label className="block font-medium mb-1">
+              Event Short Name <span className="text-red-500">*</span>
+            </label>
             <input
-              type="email"
-              placeholder="Email ID"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-300 rounded-md w-full px-3 py-2 focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
+              type="text"
+              name="shortName"
+              value={formData.shortName}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
             />
           </div>
 
-          <div className="my-2">
-            <ReCAPTCHA
-              sitekey="YOUR_SITE_KEY_HERE" // replace with your actual site key
-              onChange={(value) => setCaptchaValue(value)}
+          <div>
+            <label className="block font-medium mb-1">
+              Upload Image <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="file"
+              name="image"
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
             />
           </div>
 
-          <Button
-            type="submit"
-            className="bg-[#00A651] hover:bg-green-700 text-white w-full"
-          >
-            Submit
-          </Button>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block font-medium mb-1">
+                Start Date <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+              />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">
+                End Date <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="date"
+                name="endDate"
+                value={formData.endDate}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-medium mb-1">
+              Venue Name <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="venue"
+              value={formData.venue}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+            >
+              <option>Select venue</option>
+              <option>Chennai Convention Center</option>
+              <option>ITC Grand Chola</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block font-medium mb-1">City</label>
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+              />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">State</label>
+              <input
+                type="text"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-medium mb-1">
+              Country <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="country"
+              value={formData.country}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+            >
+              <option>India</option>
+              <option>USA</option>
+              <option>UK</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block font-medium mb-1">
+                Registration Type <span className="text-red-500">*</span>
+              </label>
+              <select
+                name="registrationType"
+                value={formData.registrationType}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+              >
+                <option>Paid</option>
+                <option>Free</option>
+              </select>
+            </div>
+            <div>
+              <label className="block font-medium mb-1">
+                Amount (in rupees) <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="amount"
+                value={formData.amount}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-medium mb-1">
+              Status <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
+            >
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4">
+            <Button
+              type="button"
+              className="bg-gray-200 text-gray-800 hover:bg-gray-300"
+              onClick={() => router.push("/dashboard/events")}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" className="bg-[#FF6600] hover:bg-[#e65500] text-white">
+              Save
+            </Button>
+          </div>
         </form>
       </div>
     </div>
