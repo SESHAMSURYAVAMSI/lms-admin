@@ -5,10 +5,10 @@ import Image from "next/image";
 
 const menuItems = [
   { label: "Events", path: "/dashboard/events", icon: "/icons/events.png" },
-  { label: "Orders", path: "/dashboard/registeredevents", icon: "/icons/order.png" },
+  { label: "Orders", path: "/dashboard/mypurchase", icon: "/icons/order.png" },
   // { label: "Speakers", path: "/dashboard/speakers", icon: "/icons/speaker.png" },
   { label: "My Profile", path: "/dashboard/myprofile", icon: "/icons/my-profile.png" },
-  { label: "Users", path: "/dashboard/mypurchase", icon: "/icons/my-profile.png" },
+  { label: "Users", path: "/dashboard/users", icon: "/icons/my-profile.png" },
 ];
 
 export default function Sidebar() {
