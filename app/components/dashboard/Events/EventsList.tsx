@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { CalendarDays, MapPin, MoreVertical, Edit3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,9 +22,10 @@ interface Props {
   onAdd?: () => void;
 }
 
-export default function EventsList({ data, onEdit, onDelete,  }: Props) {
+export default function EventsList({ data, onEdit, onDelete }: Props) {
   const [activeTab, setActiveTab] = useState("Live");
   const [search, setSearch] = useState("");
+  const router = useRouter();
 
   const filteredData = data.filter((ev) =>
     ev.fullName.toLowerCase().includes(search.toLowerCase())
@@ -54,16 +56,6 @@ export default function EventsList({ data, onEdit, onDelete,  }: Props) {
             </button>
           ))}
         </div>
-
-        {/* {onAdd && (
-          <Button
-            onClick={onAdd}
-            className="bg-[#ff7a1a] hover:bg-[#f26d0e] text-white flex items-center gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add Event
-          </Button>
-        )} */}
       </div>
 
       {/* Search */}
@@ -149,6 +141,7 @@ export default function EventsList({ data, onEdit, onDelete,  }: Props) {
                   </div>
 
                   <div className="flex items-center gap-2">
+                    {/* Edit Button */}
                     <Button
                       size="sm"
                       onClick={() => onEdit(ev)}
@@ -157,6 +150,7 @@ export default function EventsList({ data, onEdit, onDelete,  }: Props) {
                       Edit
                     </Button>
 
+                    {/* Dropdown Menu */}
                     <DropdownMenu modal={false}>
                       <DropdownMenuTrigger asChild>
                         <Button
@@ -172,7 +166,7 @@ export default function EventsList({ data, onEdit, onDelete,  }: Props) {
                         <DropdownMenuItem
                           onSelect={(e) => {
                             e.preventDefault();
-                            onEdit(ev);
+                            router.push(`/dashboard/events/${ev.id}`);
                           }}
                         >
                           <Edit3 className="mr-2 h-4 w-4" /> Manage Event

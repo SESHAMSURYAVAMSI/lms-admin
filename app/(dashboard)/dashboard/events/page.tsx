@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import EventsList from "@/app/components/dashboard/Events/EventsList";
 import AddEventDrawer from "@/app/components/dashboard/Events/AddEventDrawer";
 
+
 /**
  * Event type used across these files
  */

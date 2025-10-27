@@ -35,7 +35,7 @@ export default function AddEventDrawer({
     }
   );
 
-  const handleChange = (key: keyof EventRecord, value: string | number) => {
+  const handleChange = (key: keyof EventRecord, value: string | number | File) => {
     setForm({ ...form, [key]: value });
   };
 
@@ -61,12 +61,8 @@ export default function AddEventDrawer({
             {defaultValues ? "Edit Event" : "Add Event"}
           </h2>
 
-          {/* Helper component for horizontal form row */}
-          {/** Using flex with label fixed width */}
-          {/** Label width 40% and input width 60% */}
-          {/** Can adjust w-[40%] to any preferred width */}
           <div className="space-y-3">
-            {/** Full Name */}
+            {/* Full Name */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 Event Full Name <span className="text-red-500">*</span>
@@ -80,7 +76,7 @@ export default function AddEventDrawer({
               />
             </div>
 
-            {/** Short Name */}
+            {/* Short Name */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 Event Short Name <span className="text-red-500">*</span>
@@ -94,23 +90,42 @@ export default function AddEventDrawer({
               />
             </div>
 
-            {/** Upload Image */}
+            {/* Upload Image (Improved Section) */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 Upload Image <span className="text-red-500">*</span>
               </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleChange("imageUrl", file);
-                }}
-                className="w-[60%] border rounded p-2"
-              />
+
+              <div className="w-[60%]">
+                <div className="border border-gray-300 rounded-md bg-gray-50 p-3 flex items-center justify-between">
+                  <label
+                    htmlFor="imageUpload"
+                    className="cursor-pointer px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium hover:bg-gray-100"
+                  >
+                    Choose File
+                  </label>
+                  <span className="text-gray-600 text-sm truncate ml-3 flex-1">
+                    {form.imageUrl
+                      ? typeof form.imageUrl === "string"
+                        ? form.imageUrl.split("/").pop()
+                        : form.imageUrl.name
+                      : "No file chosen"}
+                  </span>
+                  <input
+                    id="imageUpload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleChange("imageUrl", file);
+                    }}
+                  />
+                </div>
+              </div>
             </div>
 
-            {/** Start Date */}
+            {/* Start Date */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 Start Date <span className="text-red-500">*</span>
@@ -124,7 +139,7 @@ export default function AddEventDrawer({
               />
             </div>
 
-            {/** End Date */}
+            {/* End Date */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 End Date <span className="text-red-500">*</span>
@@ -138,7 +153,7 @@ export default function AddEventDrawer({
               />
             </div>
 
-            {/** Venue */}
+            {/* Venue */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 Venue Name <span className="text-red-500">*</span>
@@ -156,7 +171,7 @@ export default function AddEventDrawer({
               </select>
             </div>
 
-            {/** City */}
+            {/* City */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 City <span className="text-red-500">*</span>
@@ -170,7 +185,7 @@ export default function AddEventDrawer({
               />
             </div>
 
-            {/** State */}
+            {/* State */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 State <span className="text-red-500">*</span>
@@ -184,7 +199,7 @@ export default function AddEventDrawer({
               />
             </div>
 
-            {/** Country */}
+            {/* Country */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 Country <span className="text-red-500">*</span>
@@ -201,7 +216,7 @@ export default function AddEventDrawer({
               </select>
             </div>
 
-            {/** Registration Type */}
+            {/* Registration Type */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 Registration Type <span className="text-red-500">*</span>
@@ -219,7 +234,7 @@ export default function AddEventDrawer({
               </select>
             </div>
 
-            {/** Amount */}
+            {/* Amount (only if Paid) */}
             {form.registrationType === "Paid" && (
               <div className="flex items-center gap-4">
                 <label className="w-[40%] text-sm font-medium">
@@ -237,7 +252,7 @@ export default function AddEventDrawer({
               </div>
             )}
 
-            {/** Status */}
+            {/* Status */}
             <div className="flex items-center gap-4">
               <label className="w-[40%] text-sm font-medium">
                 Status <span className="text-red-500">*</span>
