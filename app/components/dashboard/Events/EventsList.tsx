@@ -1,8 +1,7 @@
-// @/components/EventsList.tsx
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { CalendarDays, MapPin, MoreVertical, Edit3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { EventRecord } from "@/app/(dashboard)/dashboard/events/page";
 import { useState } from "react";
+import { useSidebar } from "@/app/components/dashboard/Events/SidebarContext"; // ✅ Import Sidebar Context
 
 interface Props {
   data: EventRecord[];
@@ -25,7 +25,8 @@ interface Props {
 export default function EventsList({ data, onEdit, onDelete }: Props) {
   const [activeTab, setActiveTab] = useState("Live");
   const [search, setSearch] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
+  const { setSidebarType } = useSidebar(); // ✅ Access context
 
   const filteredData = data.filter((ev) =>
     ev.fullName.toLowerCase().includes(search.toLowerCase())
@@ -163,10 +164,13 @@ export default function EventsList({ data, onEdit, onDelete }: Props) {
                       </DropdownMenuTrigger>
 
                       <DropdownMenuContent align="end">
+                        {/* ✅ Manage Event button switches sidebar */}
                         <DropdownMenuItem
                           onSelect={(e) => {
                             e.preventDefault();
-                            router.push(`/dashboard/events/${ev.id}`);
+                            setSidebarType("manage-event"); // 👈 Switch to Manage Event Sidebar
+                            // Optional: also navigate to event page
+                            // router.push(`/dashboard/events/${ev.id}`);
                           }}
                         >
                           <Edit3 className="mr-2 h-4 w-4" /> Manage Event
