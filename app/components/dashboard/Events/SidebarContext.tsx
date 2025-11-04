@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type SidebarType = "main" | "manage-event";
+type SidebarType = "main" | "manageEvent";
 
 interface SidebarContextType {
   sidebarType: SidebarType;
